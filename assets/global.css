@@ -1,0 +1,8 @@
+.v-main__wrap {
+  background-color: #eae8e5;
+}
+
+.container {
+  max-width: none !important;
+  padding: 12px 24px !important;
+}
