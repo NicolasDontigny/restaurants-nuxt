@@ -11,6 +11,7 @@
 
     <v-text-field
       v-model="userRating"
+      type="number"
       :rules="userRatingRules"
       label="Rating"
       required
@@ -35,8 +36,8 @@
       required
     ></v-checkbox> -->
 
-    <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">
-      Validate
+    <v-btn :disabled="!valid" color="success" class="mr-4" @click="submitForm">
+      Submit
     </v-btn>
 
     <v-btn color="error" class="mr-4" @click="reset">
@@ -55,14 +56,11 @@ export default {
   data: () => ({
     valid: true,
     name: "",
-    nameRules: [
-      v => !!v || "Name is required",
-      v => (v && v.length <= 10) || "Name must be less than 10 characters"
-    ],
+    nameRules: [v => !!v || "Name is required"],
     userRating: null,
     userRatingRules: [
       v => !!v || "User Rating is required",
-      v => (v && v <= 5) || "E-mail must be valid"
+      v => (v && v > 0 && v <= 5) || "Rating must be between 1 and 5"
     ],
     address: "",
     imagePath: "",
@@ -75,7 +73,6 @@ export default {
       "Québécois",
       "Healthy Food"
     ]
-    // checkbox: false
   }),
   computed: {
     secret() {
@@ -91,6 +88,23 @@ export default {
     },
     resetValidation() {
       this.$refs.form.resetValidation();
+    },
+    submitForm() {
+      this.validate();
+
+      if (!this.valid) return;
+
+      const newRestaurant = {
+        name: this.name,
+        userRating: this.userRating,
+        address: this.address,
+        imagePath: this.imagePath,
+        cuisine: this.select
+      };
+
+      this.$store.dispatch("restaurants/addRestaurant", {
+        newRestaurant
+      });
     }
   }
 };

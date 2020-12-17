@@ -1,9 +1,10 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import restaurantsModule from "./restaurants/index";
+// import Vue from "vue";
+// import Vuex from "vuex";
+// // import restaurantsModule from "./restaurants/index";
 
-Vue.use(Vuex);
+// Vue.use(Vuex);
+// const store = new Vuex.Store();
 
-const store = new Vuex.Store({
-  modules: [restaurantsModule]
-});
+// // const store = new Vuex.Store({
+// //   modules: [restaurantsModule]
+// // });
