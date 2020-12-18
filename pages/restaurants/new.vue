@@ -10,7 +10,7 @@
     ></v-text-field>
 
     <v-text-field
-      v-model="userRating"
+      v-model.number="userRating"
       type="number"
       :rules="userRatingRules"
       label="Rating"
@@ -87,9 +87,12 @@ export default {
       this.$refs.form.reset();
     },
     resetValidation() {
+      console.log("this.name: ", this.name);
+      console.log("this.userRating: ", this.userRating);
       this.$refs.form.resetValidation();
     },
     submitForm() {
+      console.log("this.userRating: ", this.userRating);
       this.validate();
 
       if (!this.valid) return;

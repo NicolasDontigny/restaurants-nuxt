@@ -1,4 +1,4 @@
-import { apiRoutes } from "~/constants/api-routes.constants";
+import { restaurantsDataService } from "~/data-services/restaurants.data-service";
 
 export const state = () => ({
   restaurants: [],
@@ -22,40 +22,38 @@ export const mutations = {
     state.restaurants = restaurantDetails;
   },
   ADD_RESTAURANT(state, payload) {
-    console.log("mutation payload: ", payload);
     state.restaurants.unshift(payload);
+    this.$router.replace("/restaurants");
+  },
+  REMOVE_RESTAURANT(state, id) {
+    const index = state.restaurants.indexOf(restaurant => restaurant.id === id);
+    state.restaurants.splice(index, 1);
   }
 };
 
 export const actions = {
   async fetchRestaurants({ commit }) {
-    console.log(
-      "apiRoutes getRestaurants: ",
-      apiRoutes.restaurants.getRestaurants()
-    );
-    // const restaurantsData = await this.$axios.$get(
-    //   "https://developers.zomato.com/api/v2.1/search?entity_id=294&entity_type=city&cuisines=308%2C95%2C177%2C461%2C511%2C143",
-    //   {
-    //     headers: { "user-key": process.env.VUE_APP_ZOMATO_KEY }
-    //   }
-    // );
-    const restaurantsData = await this.$axios.$get(
-      apiRoutes.restaurants.getRestaurants()
-    );
+    restaurantsDataService.getRestaurants().then(restaurantsData => {
+      commit("FETCH_RESTAURANTS", Object.entries(restaurantsData.data));
+    });
+  },
+  async removeRestaurant({ commit }, payload) {
+    const id = payload.id;
 
-    commit("FETCH_RESTAURANTS", Object.entries(restaurantsData));
+    restaurantsDataService.removeRestaurant(id).then(response => {
+      console.log("delete response: ", response);
+
+      commit("REMOVE_RESTAURANT", id);
+    });
   },
   async addRestaurant({ commit }, payload) {
     const newRestaurant = payload.newRestaurant;
-    const response = await this.$axios.$post(
-      "https://restaurants-aa0cd-default-rtdb.firebaseio.com/restaurants.json",
-      newRestaurant
-    );
+    restaurantsDataService.addRestaurant(newRestaurant).then(response => {
+      console.log("response: ", response);
+      newRestaurant.id = response.name;
 
-    newRestaurant.id = response.name;
-
-    commit("ADD_RESTAURANT", newRestaurant);
-    this.$router.replace("/restaurants");
+      commit("ADD_RESTAURANT", newRestaurant);
+    });
   }
 };
 

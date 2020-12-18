@@ -20,6 +20,7 @@
         text="stars"
       ></base-green-button>
       <span class="address">{{ restaurant.address }}</span>
+      <span class="delete" @click="removeRestaurant">DELETE</span>
     </template>
   </base-card>
 </template>
@@ -27,13 +28,21 @@
 <script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
-  props: ["restaurant"]
+  props: ["restaurant"],
+  methods: {
+    removeRestaurant() {
+      this.$store.dispatch("restaurants/removeRestaurant", {
+        id: this.restaurant.id
+      });
+    }
+  }
 });
 </script>
 
 <style lang="less" scoped>
 img {
   width: 100%;
+  height: 250px;
 }
 
 .footer-item {
@@ -42,5 +51,11 @@ img {
 
 .address {
   color: black;
+}
+
+.delete {
+  background-color: red;
+  padding: 5px;
+  color: white;
 }
 </style>
