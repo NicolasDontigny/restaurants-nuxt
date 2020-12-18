@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form" v-model="valid" lazy-validation>
-    <h1>{{ secret }}</h1>
+    <h1>Add a Restaurant</h1>
     <v-text-field
       v-model="name"
       :counter="10"
@@ -28,13 +28,6 @@
       label="Cuisine"
       required
     ></v-select>
-
-    <!-- <v-checkbox
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
-      required
-    ></v-checkbox> -->
 
     <v-btn :disabled="!valid" color="success" class="mr-4" @click="submitForm">
       Submit
@@ -74,11 +67,6 @@ export default {
       "Healthy Food"
     ]
   }),
-  computed: {
-    secret() {
-      return this.$store.getters["restaurants/secret"];
-    }
-  },
   methods: {
     validate() {
       this.$refs.form.validate();

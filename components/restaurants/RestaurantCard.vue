@@ -20,7 +20,9 @@
         text="stars"
       ></base-green-button>
       <span class="address">{{ restaurant.address }}</span>
-      <span class="delete" @click="removeRestaurant">DELETE</span>
+      <v-btn color="error" @click="removeRestaurant">
+        Delete
+      </v-btn>
     </template>
   </base-card>
 </template>
